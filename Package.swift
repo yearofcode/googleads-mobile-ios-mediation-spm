@@ -1,43 +1,40 @@
 // swift-tools-version: 5.4
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
 import PackageDescription
 
 let package = Package(
-  name: "GoogleMobileAdsMediation",
-  platforms: [.iOS(.v12)],
-  products: [
-    .library(
-      name: "GoogleMobileAdsMediationAppLovin",
-      targets: [
-        // "GoogleMobileAdsMediationAppLovinTarget",
-        "GoogleMobileAdsMediationPangleTarget"
+    name: "GoogleMobileAdsMediation",
+    platforms: [.iOS(.v12)],
+    products: [
+        .library(
+            name: "GoogleMobileAdsMediationPangle",
+            targets: ["GoogleMobileAdsMediationPangleTarget"]
+        )
+    ],
+    dependencies: [
+        .package(
+            name: "GoogleMobileAds",
+            url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+            from: "11.10.0"
+        ),
+        .package(
+            name: "AdsGlobalPackage",
+            url: "https://github.com/bytedance/AdsGlobalPackage",
+            from: "6.2.0-release.9"
+        )
+    ],
+    targets: [
+        .binaryTarget(
+            name: "GoogleMobileAdsMediationPangleBinaryTarget",
+            url: "https://github.com/yearofcode/googleads-mobile-ios-mediation-spm/raw/refs/heads/main/pangle/6.2.0.9.0/PangleAdapter.zip",
+            checksum: "09ffb4a64d9b40d023d26c37629b2ddd37f4f9d7c4780570d6d4c703cde493c0"
+        ),
+        .target(
+            name: "GoogleMobileAdsMediationPangleTarget",
+            dependencies: [
+                .target(name: "GoogleMobileAdsMediationPangleBinaryTarget"),
+                .product(name: "GoogleMobileAds", package: "GoogleMobileAds"),
+                .product(name: "AdsGlobalPackage", package: "AdsGlobalPackage")
+            ]
+        ),
     ]
-    )
-  ],
-  dependencies: [
-    .package(
-      name: "GoogleMobileAds",
-      url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
-      "11.10.0"
-    )
-  ],
-  targets: [
-    // .binaryTarget(
-    //     name: "GoogleMobileAdsMediationAppLovinTarget",
-    //     url: "",
-    //     dependencies: [],
-    //     path: "GoogleMobileAdsMediationAppLovinTarget"
-    // ),
-    .binaryTarget(
-        name: "GoogleMobileAdsMediationPangleTarget",
-        url: "",
-        dependencies: [
-            .package(
-                name: "AdsGlobalPackage",
-                url: "https://github.com/bytedance/AdsGlobalPackage"
-            )
-        ],
-    )
-  ]
 )
